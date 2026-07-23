@@ -1,0 +1,448 @@
+\RequirePackage[svgnames,table]{xcolor}
+
+% =============================================================================
+%  Yale arXiv paper template --- example document & usage guide.
+%
+%  This file plays the same role as `neurips_2026.tex` in the NeurIPS template:
+%  it is a working paper that also documents how the template is used. To write
+%  your own paper, replace the title, author, abstract, and body below with your
+%  own content, and keep the surrounding machinery (class, preamble, commands).
+% =============================================================================
+
+% Document class options (see Section 1.2):
+%   font size : 10pt | 11pt | 12pt
+%   paper     : letterpaper
+%   columns   : twocolumn        (single column by default)
+%   extras    : logo | nonumbering | copyright | internal | address
+\documentclass[11pt,letterpaper,logo]{yalearxiv}
+
+\input{preamble}   % third-party packages (natbib, booktabs, listings, ...)
+\input{command}    % math shortcuts and theorem-like environments
+
+% -----------------------------------------------------------------------------
+%  A ready-made colored callout box you can use for highlights (see Section 5.3).
+% -----------------------------------------------------------------------------
+\newtcolorbox{simpleElegantQuote}{
+    colback=AliceBlue!50!White,
+    colframe=RoyalBlue!75!Black,
+    boxrule=0.5pt,
+    arc=2mm,
+    boxsep=4pt,
+    left=10pt, right=10pt,
+    top=8pt, bottom=8pt,
+    fontupper=\itshape,
+}
+
+% -----------------------------------------------------------------------------
+%  Title and running title. \title sets the title inside the colored title box;
+%  \runningtitle sets the short title printed in the header from page 2 onward.
+% -----------------------------------------------------------------------------
+\title{The Yale arXiv Paper Template:\\ Formatting Instructions and Usage Guide}
+
+\runningtitle{The Yale arXiv Paper Template --- Usage Guide}
+
+% -----------------------------------------------------------------------------
+%  Optional metadata. Any of these may be left out.
+% -----------------------------------------------------------------------------
+\keywords{Yale template, \LaTeX{}, arXiv preprint, formatting instructions}
+
+\usepackage{fontawesome5}   % brand/utility icons, e.g. \faGithub
+
+% -----------------------------------------------------------------------------
+%  A small Yale affiliation marker used as a superscript next to author names.
+%  Change or remove it freely --- it is just an ordinary \newcommand.
+% -----------------------------------------------------------------------------
+\definecolor{yaleblue}{RGB}{0,58,112}
+\newcommand{\yale}{%
+  \textsuperscript{%
+    {\usefont{T1}{pbk}{m}{n}\textcolor{yaleblue}{\textbf{Y}}}%
+  }%
+}
+
+% -----------------------------------------------------------------------------
+%  Authors and affiliations. Separate authors with commas; put each affiliation
+%  and any links on their own line with \\.
+% -----------------------------------------------------------------------------
+\author{Ngoc Bui\yale\\
+\yale Department of Computer Science, Yale University\\
+\faGithub~\textbf{Source Code:} \href{https://github.com/ngocbh/yale-paper-template}{\texttt{https://github.com/ngocbh/yale-paper-template}}
+}
+
+\hypersetup{colorlinks=true, linkcolor=blue!50!black, citecolor=blue!50!black,
+            urlcolor=blue!50!black}
+
+% Absorb the few unbreakable inline \verb+...+ command names in this guide so
+% they don't spill into the margin. Harmless to keep in your own paper.
+\emergencystretch=3em
+
+
+\begin{document}
+
+
+% -----------------------------------------------------------------------------
+%  Abstract. In this template the abstract is *captured* here and then typeset
+%  inside the title box by \maketitle, so it must appear BEFORE \maketitle.
+%  Keep it to a single paragraph.
+% -----------------------------------------------------------------------------
+\begin{abstract}
+\vspace{-1mm}
+{\centering\section*{Abstract}}
+This document is both a working example and a usage guide for the Yale arXiv
+paper template. It demonstrates how the template renders the title, authors,
+abstract, headings, citations, figures, tables, and mathematics, and it explains
+the document-class options and custom commands the template provides. To prepare
+your own paper, replace the title, author, abstract, and body text below with
+your own content while leaving the surrounding template machinery
+(\texttt{yalearxiv.cls}, \texttt{preamble.tex}, and \texttt{command.tex})
+intact. The abstract should be limited to a single paragraph; it is typeset in
+$10$-point type inside the rounded title box at the top of the first page, and is
+optionally followed by a list of keywords.
+\end{abstract}
+
+
+\maketitle
+
+
+% =============================================================================
+\section{About this template}
+\label{sec:about}
+% =============================================================================
+
+The instructions below are suggestions to help your paper inherit a
+consistent, Yale-branded appearance. This template is a Yale-styled adaptation of
+the UC~Berkeley RAIL report class, which in turn derives from the Google DeepMind
+technical-report template; it is distributed under the Creative Commons
+Attribution--ShareAlike~4.0 license. The present file, \verb+main.tex+,
+doubles as a demonstration and as documentation: everything you see rendered here
+is produced by the same commands you will use in your own paper.
+
+The formatting behavior of the template is summarized in
+Sections~\ref{sec:format}, \ref{sec:headings}, and \ref{sec:others} below.
+Section~\ref{sec:extras} documents features specific to this Yale template, and
+Section~\ref{sec:building} explains how to compile the paper.
+
+\subsection{What is in this template}
+\label{sec:files}
+
+The template is a small collection of files rather than a single \verb+.sty+:
+
+\begin{itemize}
+  \item \verb+main.tex+ --- the paper itself (this file). It is the only
+    file you normally edit when writing.
+  \item \verb+yalearxiv.cls+ --- the document class. It sets the fonts, colors,
+    margins, title box, and the header/footer. \textbf{It is best left unmodified}
+    unless you intend to change the template's look for everyone who uses it.
+  \item \verb+preamble.tex+ --- third-party packages (\verb+natbib+,
+    \verb+booktabs+, \verb+amsmath+, \verb+listings+, and so on). Add a package
+    you need here.
+  \item \verb+command.tex+ --- personal macros and the theorem-like environments
+    (see Section~\ref{sec:math}). Add your own shortcuts here.
+  \item \verb+main.bib+ --- the \textsc{Bib}\TeX{} database for your references.
+  \item \verb+figures/+ --- image assets, including \verb+yale_logo.png+ used by
+    the \verb+logo+ class option.
+\end{itemize}
+
+\subsection{The document class and its options}
+\label{sec:options}
+
+The paper begins with a single \verb+\documentclass+ line:
+\begin{verbatim}
+   \documentclass[11pt,letterpaper,logo]{yalearxiv}
+\end{verbatim}
+The available options are:
+
+\begin{itemize}
+  \item \verb+10pt+ / \verb+11pt+ / \verb+12pt+ --- base font size.
+  \item \verb+letterpaper+ --- US Letter paper (recommended for arXiv).
+  \item \verb+twocolumn+ --- switch to a two-column layout (single column by
+    default).
+  \item \verb+logo+ --- print \verb+figures/yale_logo.png+ in the top-left of the
+    first page.
+  \item \verb+nonumbering+ --- use unnumbered section headings.
+  \item \verb+copyright+ --- add a copyright line to the first-page footer.
+  \item \verb+internal+ --- mark the document as internal (enables the
+    watermark/report-number footer).
+  \item \verb+address+ --- print an affiliation line in the footer.
+\end{itemize}
+
+To fix the date shown in the header, redefine \verb+\today+ in your preamble:
+\begin{verbatim}
+   \renewcommand{\today}{1 January 2026}
+\end{verbatim}
+
+\subsection{Title, authors, and affiliations}
+\label{sec:title}
+
+Set the paper title with \verb+\title{...}+ and a short header title with
+\verb+\runningtitle{...}+. Authors go in a single \verb+\author{...}+ block;
+separate names with commas and put each affiliation or link on its own line with
+\verb+\\+. The \verb+\yale+ command defined in the preamble produces the small
+superscript \yale{} marker used to tie authors to their affiliation; it is an
+ordinary macro that you may edit or remove. The title, authors, and abstract are
+all rendered together inside the rounded title box by \verb+\maketitle+.
+
+
+% =============================================================================
+\section{General formatting}
+\label{sec:format}
+% =============================================================================
+
+The class fixes the page geometry, fonts, and spacing for you; you should not
+need to touch any of it. The body text is set in Bitstream Charter
+(\verb+XCharter+) with a matching Latin-Modern typewriter font, on US~Letter
+paper. Paragraphs are separated by a half-line of vertical space and are not
+indented, so a blank line in the source starts a visually distinct paragraph.
+
+The title is set in Yale blue, bold, and centered inside a rounded box at the top
+of the first page. All headings are bold and flush left. It is worth paying
+attention to the guidance in Section~\ref{sec:others} regarding citations,
+figures, tables, and mathematics, and we suggest keeping the margins, text width,
+and font sizes defined in the class file.
+
+
+% =============================================================================
+\section{Headings}
+\label{sec:headings}
+% =============================================================================
+
+First-level headings are bold and, by default, numbered. Use \verb+\section+,
+\verb+\subsection+, and \verb+\subsubsection+ for the first three levels. If you
+prefer unnumbered headings throughout, pass the \verb+nonumbering+ class option.
+
+\subsection{Second-level headings}
+\label{sec:second}
+
+Second-level headings are produced with \verb+\subsection+ and are slightly
+smaller than first-level headings.
+
+\subsubsection{Third-level headings}
+\label{sec:third}
+
+Third-level headings are produced with \verb+\subsubsection+ and are set in bold
+italic.
+
+\paragraph{Paragraph headings.}
+There is also a \verb+\paragraph+ command, which sets its heading in bold, flush
+left, and run into the start of the paragraph, as shown here. Use it for the
+finest level of structure.
+
+
+% =============================================================================
+\section{Citations, figures, tables, and mathematics}
+\label{sec:others}
+% =============================================================================
+
+These instructions apply to every paper written with the template.
+
+\subsection{Citations within the text}
+\label{sec:citations}
+
+The \verb+natbib+ package is loaded in \verb+preamble.tex+ and configured for a
+numeric, square-bracket citation style via \verb+\setcitestyle{square}+; the
+bibliography style is \verb+plainnat+. Use \verb+\citet+ for a textual citation
+that reads as part of the sentence, and \verb+\citep+ for a parenthetical one.
+For example, \verb+\citet{Alpher02}+ produces ``\citet{Alpher02} showed that
+frobnication is possible,'' whereas \verb+\citep{Alpher03,Alpher04}+ produces a
+grouped parenthetical citation \citep{Alpher03,Alpher04}. Supplementary material
+can be cited in the same way \citep{Authors14}. Any consistent citation style is
+acceptable; to change it, edit the \verb+\setcitestyle+ line in the preamble and
+the \verb+\bibliographystyle+ line near the end of this file.
+
+\subsection{Footnotes}
+\label{sec:footnotes}
+
+Use footnotes sparingly. Indicate a footnote with the \verb+\footnote+
+command,\footnote{This is a sample footnote; it is typeset at the bottom of the
+page on which it appears.} and note that footnote marks are placed \emph{after}
+punctuation.
+
+\subsection{Figures}
+\label{sec:figures}
+
+All artwork should be neat, clean, and legible, and figures are numbered
+consecutively. The figure caption is placed \emph{below} the figure. Include
+raster or vector art with \verb+\includegraphics+ from the \verb+graphicx+
+package (loaded for you), and it is best to give the width as a multiple of
+\verb+\linewidth+ so the figure scales with the text block:
+\begin{verbatim}
+   \includegraphics[width=0.8\linewidth]{figures/your_figure.pdf}
+\end{verbatim}
+Figure~\ref{fig:sample} shows a placeholder produced without an external file.
+You may use color, but try to keep captions and the paper body legible in both
+color and grayscale.
+
+\begin{figure}[t]
+  \centering
+  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+  \caption{Sample figure caption. Explain what the figure shows and, where
+  possible, state its key take-away in the caption itself.}
+  \label{fig:sample}
+\end{figure}
+
+\subsection{Tables}
+\label{sec:tables}
+
+All tables should be centered, and the caption is placed \emph{above} the table.
+Publication-quality tables typically avoid vertical rules; the \verb+booktabs+ package
+(loaded for you) provides \verb+\toprule+, \verb+\midrule+, and \verb+\bottomrule+
+for clean horizontal rules, as illustrated in Table~\ref{tab:sample}.
+
+\begin{table}[t]
+  \caption{Sample table caption. Explain what the table shows and add a key
+  take-away message to the caption.}
+  \label{tab:sample}
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    \multicolumn{2}{c}{Part} \\
+    \cmidrule(r){1-2}
+    Name     & Description     & Size ($\mu$m) \\
+    \midrule
+    Dendrite & Input terminal  & $\approx$100  \\
+    Axon     & Output terminal & $\approx$10   \\
+    Soma     & Cell body       & up to $10^6$  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Mathematics, theorems, and definitions}
+\label{sec:math}
+
+Use \LaTeX{} (or \verb+amsmath+) commands for display math; avoid bare
+\verb+$$...$$+. Numbered equations use the \verb+equation+ environment:
+\begin{equation}
+  \label{eq:sample}
+  \mathcal{L}(\theta)
+  = \frac{1}{n}\sum_{i=1}^{n} \ell\!\big(f_\theta(x_i), y_i\big).
+\end{equation}
+The macros in \verb+command.tex+ provide common shortcuts (for example
+\verb+\R+ for $\R$, \verb+\E+ for $\E$, and \verb+\argmin+ / \verb+\argmax+).
+
+The file \verb+command.tex+ also defines a family of theorem-like environments
+that share a single counter: \verb+definition+, \verb+theorem+, \verb+lemma+,
+\verb+corollary+, \verb+proposition+, \verb+remark+, \verb+observation+,
+\verb+claim+, \verb+example+, \verb+assumption+, and \verb+conjecture+.
+For instance:
+
+\begin{definition}[Frobnication]
+\label{def:frob}
+A map $f:\mathcal{X}\to\mathcal{Y}$ is \emph{frobnicable} if there exists a foo
+filter $g$ such that $g\circ f$ is the identity on $\mathcal{X}$.
+\end{definition}
+
+\begin{theorem}
+\label{thm:frob}
+Every frobnicable map admits a foo filter that is unique up to isomorphism.
+\end{theorem}
+
+\begin{proof}
+The claim follows directly from Definition~\ref{def:frob} and the uniqueness of
+adjoints; the \verb+proof+ environment supplied by \verb+amsthm+ adds the closing
+$\qed$ symbol automatically.
+\end{proof}
+
+
+% =============================================================================
+\section{Extra features of the Yale template}
+\label{sec:extras}
+% =============================================================================
+
+The following features go beyond a plain article class and are specific to this
+template.
+
+\subsection{Header and footer}
+\label{sec:headerfooter}
+
+On the first page, the \verb+logo+ option prints the Yale logo in the top-left
+corner and, if you set \verb+\paperurl{...}+, its value is printed as a link in
+the top-right corner. From the second page onward, the header shows the
+\verb+\runningtitle+ centered and the page number in the bottom-right. The
+\verb+copyright+, \verb+internal+, and \verb+address+ options add the
+corresponding lines to the footer.
+
+\subsection{Corresponding author, paper URL, and keywords}
+\label{sec:metadata}
+
+Several optional metadata commands are available:
+\begin{itemize}
+  \item \verb+\keywords{a, b, c}+ --- prints a keyword list beneath the abstract
+    inside the title box (as shown on the first page).
+  \item \verb+\paperurl{...}+ --- prints a project or preprint URL in the
+    first-page header.
+  \item \verb+\correspondingauthor{...}+ --- enables a corresponding-author note
+    in the first-page footer.
+  \item \verb+\reportnumber{...}+ --- prints a report number in the footer when
+    the \verb+internal+ option is active.
+\end{itemize}
+
+\subsection{Callout boxes}
+\label{sec:callout}
+
+The template preloads \verb+tcolorbox+. This file defines a \verb+simpleElegantQuote+
+environment for highlighting a key sentence:
+
+\begin{simpleElegantQuote}
+A paper template should get out of your way: set the type once, set it well, and
+let the author think about the ideas rather than the margins.
+\end{simpleElegantQuote}
+
+\subsection{Code and prompt listings}
+\label{sec:listings}
+
+\verb+preamble.tex+ defines a \verb+promptstyle+ for the \verb+listings+ package,
+useful for verbatim code, configuration, or LLM prompts:
+
+\begin{lstlisting}[style=promptstyle]
+System: You are a helpful assistant.
+User: Summarize the Yale arXiv template in one sentence.
+Assistant: It is a Yale-branded article class that fixes fonts, colors, and
+           layout so you only have to write the paper.
+\end{lstlisting}
+
+
+% =============================================================================
+\section{Building the paper}
+\label{sec:building}
+% =============================================================================
+
+Prepare submission files with paper size ``US~Letter'' and generate the PDF
+directly with \verb+pdflatex+ so that only Type~1 or embedded TrueType fonts are
+used. The simplest way is \verb+latexmk+, which runs the full
+\verb+pdflatex+\,$\rightarrow$\,\verb+bibtex+\,$\rightarrow$\,\verb+pdflatex+ cycle
+so that citations and cross-references resolve in one command:
+\begin{verbatim}
+   latexmk -pdf -interaction=nonstopmode main.tex
+\end{verbatim}
+This produces \verb+main.pdf+. To remove build artifacts, run
+\verb+latexmk -c+ (keep the PDF) or \verb+latexmk -C+ (also remove the PDF). See
+\verb+README.md+ for environment-specific notes.
+
+
+% =============================================================================
+\section*{Acknowledgments}
+% =============================================================================
+
+Use an unnumbered first-level heading for acknowledgments, placed at the end of
+the paper before the references. This Yale template adapts the UC~Berkeley RAIL
+report class and the Google DeepMind technical-report template, used under the
+CC~BY-SA~4.0 license.
+
+
+\bibliography{main}
+\bibliographystyle{plainnat}
+
+
+\appendix
+% =============================================================================
+\section{Additional material}
+\label{app:extra}
+% =============================================================================
+
+Content placed after \verb+\appendix+ is lettered rather than numbered
+(Appendix~\ref{app:extra}), and the axiom-style counters defined in
+\verb+command.tex+ reset so they read \textit{A.1}, \textit{A.2}, and so on. Use
+the appendix for proofs, extended tables, additional experiments, or verbatim
+prompts that support --- but are not essential to --- the main text.
+
+
+\end{document}
