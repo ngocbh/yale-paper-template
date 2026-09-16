@@ -332,7 +332,11 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 \makeatletter
 \newcommand{\abscontent}{
 	\noindent
-	\parbox{\dimexpr\linewidth}{\absfont \theabstract}
+	\parbox{\dimexpr\linewidth}{%
+		\absfont
+		\vspace{-1mm}%
+		{\centering\section*{\abstractname}}%
+		\theabstract}
 	\@ifundefined{@keywords}{}{
 		\vskip1em \noindent \keywordsfont  Keywords: \@keywords}
 }
@@ -440,4 +444,3 @@ labelsep=pipe,
 singlelinecheck=off,%
 %justification=centering
 }
-
